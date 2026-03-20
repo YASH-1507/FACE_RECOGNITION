@@ -1,30 +1,99 @@
-# Hey, I'm Yash 👋
+# Face Recognition System
 
-IT graduate with a postgrad in **Cloud Computing & Cybersecurity**. I build things with Python and break things for security — sometimes both at once.
+A Python-based face recognition tool that detects and identifies known faces in images using OpenCV and the `face_recognition` library.
 
-## What I'm working with
+## What it does
 
-- **Languages:** Python, Bash, HTML/CSS
-- **Cloud:** AWS, Azure, GCP fundamentals
-- **Security:** Network security, vulnerability assessment, SIEM basics
-- **Tools:** OpenCV, MediaPipe, Git, Linux, Docker
-- **Currently exploring:** Cloud security automation, IaC (Terraform), Python scripting for security ops
+- Scans a `faces/` directory to build an encoded database of known faces
+- Takes an input image and locates all faces in it
+- Compares detected faces against the known database using facial distance metrics
+- Draws bounding boxes and labels around recognized faces
+- Displays the annotated image in a live window (press `q` to quit)
 
-## Projects
+## Demo
 
-🖐️ **[Hand Gesture Media Control](https://github.com/YASH-1507/hand-gesture-media-control)** — Control media playback using webcam hand tracking with MediaPipe and OpenCV
+```
+$ python face_rec.py
+['Yash', 'Unknown']
+```
 
-👤 **[Face Recognition System](https://github.com/YASH-1507/FACE_RECOGNITION)** — Detect and identify faces in images using dlib-based face encodings
+## Tech Stack
 
-## What's next
+- **Python 3.8+**
+- **OpenCV** — image processing and display
+- **face_recognition** (dlib-based) — face encoding and comparison
+- **NumPy** — array operations for distance calculations
 
-Building cloud-native security tools and automation scripts. Open to collaborating on Python-based cybersecurity projects.
+## Project Structure
 
-## Get in touch
+```
+FACE_RECOGNITION/
+├── face_rec.py          # Main recognition script
+├── faces/               # Directory of known face images (.jpg/.png)
+│   ├── yash.jpg
+│   └── ...
+├── test.jpg             # Test image to run recognition on
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/joshiyash15/)
-[![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:joshiyash1507@gmail.com)
+## Setup
 
----
+### Prerequisites
 
-*Update the LinkedIn and email links above with your real details.*
+- Python 3.8 or higher
+- CMake (required for dlib compilation)
+
+### Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/YASH-1507/FACE_RECOGNITION.git
+cd FACE_RECOGNITION
+
+# Create a virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Usage
+
+1. Add known face images (`.jpg` or `.png`) to the `faces/` directory. The filename (without extension) becomes the label.
+
+2. Place the image you want to test as `test.jpg` in the project root.
+
+3. Run:
+```bash
+python face_rec.py
+```
+
+4. A window will display the image with recognized faces labelled. Press `q` to close.
+
+## How It Works
+
+1. **Encoding phase** — iterates through `faces/` and generates a 128-dimensional face encoding for each image using dlib's ResNet model
+2. **Detection phase** — locates all face bounding boxes in the test image using HOG-based detection
+3. **Comparison phase** — computes Euclidean distance between each detected face and all known encodings, picking the closest match
+4. **Display phase** — draws rectangles and name labels on the image using OpenCV
+
+## Limitations
+
+- Assumes exactly one face per image in the `faces/` directory
+- No error handling if a face isn't detected in a reference image
+- Runs on a single static image (no webcam/video stream support yet)
+
+## Future Improvements
+
+- [ ] Add webcam real-time recognition
+- [ ] Handle multiple faces per reference image
+- [ ] Add confidence threshold filtering
+- [ ] Implement a simple CLI for image path input
+- [ ] Add logging instead of print statements
+
+## License
+
+This project is for educational purposes.
